@@ -1,3 +1,5 @@
+// Copyright 2024 <Copyright Owner>
+
 #include "train.h"
 
 Train::Train() : countOp(0), first(nullptr) {
