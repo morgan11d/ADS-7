@@ -2,9 +2,9 @@
 
 #include "train.h"
 
-#include <cstdlib>
 #include <ctime>
 
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <numeric>
@@ -14,8 +14,9 @@ struct ExperimentResult {
     int operations;
 };
 
-ExperimentResult runExperiment(int length,
-                                const std::vector<bool>& lightStates) {
+ExperimentResult runExperiment(
+    int length,
+    const std::vector<bool>& lightStates) {
     Train train;
 
     for (int i = 0; i < length; i++) {
@@ -29,7 +30,7 @@ ExperimentResult runExperiment(int length,
 }
 
 int main() {
-    srand(time(nullptr));
+    srand(static_cast<unsigned int>(time(nullptr)));
 
     const int MAX_TRAIN_LENGTH = 50;
     const int EXPERIMENTS_PER_LENGTH = 5;
@@ -46,30 +47,30 @@ int main() {
 
         for (int exp = 0; exp < EXPERIMENTS_PER_LENGTH; exp++) {
             std::vector<bool> allOff(length, false);
-            auto result1 = runExperiment(length, allOff);
+            ExperimentResult result1 = runExperiment(length, allOff);
             offResults.push_back(result1.operations);
 
             std::vector<bool> allOn(length, true);
-            auto result2 = runExperiment(length, allOn);
+            ExperimentResult result2 = runExperiment(length, allOn);
             onResults.push_back(result2.operations);
 
             std::vector<bool> random(length);
             for (int i = 0; i < length; i++) {
                 random[i] = (rand() % 2 == 0);
             }
-            auto result3 = runExperiment(length, random);
+            ExperimentResult result3 = runExperiment(length, random);
             randResults.push_back(result3.operations);
         }
 
-        double avgOff = std::accumulate(offResults.begin(),
-                                         offResults.end(), 0.0) /
-                        offResults.size();
-        double avgOn = std::accumulate(onResults.begin(),
-                                        onResults.end(), 0.0) /
-                       onResults.size();
-        double avgRand = std::accumulate(randResults.begin(),
-                                          randResults.end(), 0.0) /
-                         randResults.size();
+        double avgOff =
+            std::accumulate(offResults.begin(), offResults.end(), 0.0) /
+            static_cast<double>(offResults.size());
+        double avgOn =
+            std::accumulate(onResults.begin(), onResults.end(), 0.0) /
+            static_cast<double>(onResults.size());
+        double avgRand =
+            std::accumulate(randResults.begin(), randResults.end(), 0.0) /
+            static_cast<double>(randResults.size());
 
         lengths.push_back(length);
         allOffOps.push_back(avgOff);
