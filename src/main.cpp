@@ -1,7 +1,7 @@
+// Copyright 2024 <Copyright Owner>
+
 #include "train.h"
 
-#include <algorithm>
-#include <cmath>
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
