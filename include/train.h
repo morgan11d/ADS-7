@@ -1,3 +1,5 @@
+// Copyright 2024 <Copyright Owner>
+
 #ifndef INCLUDE_TRAIN_H_
 #define INCLUDE_TRAIN_H_
 
