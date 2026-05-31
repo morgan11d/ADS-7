@@ -65,6 +65,8 @@ int Train::getLength() {
         return count;
     }
 
+    Car *start = current;
+
     while (true) {
         current = saved->next;
         countOp++;
@@ -85,7 +87,7 @@ int Train::getLength() {
             countOp++;
         }
 
-        if (current->light == false) {
+        if (current == start && current->light == true) {
             return count;
         }
     }
