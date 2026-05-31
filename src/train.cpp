@@ -1,17 +1,14 @@
-// Copyright 2024 <Copyright Owner>
-
 #include "train.h"
 
-Train::Train() : countOp(0), first(nullptr) {
-}
+Train::Train() : countOp(0), first(nullptr) {}
 
 Train::~Train() {
     if (first == nullptr) return;
 
     first->prev->next = nullptr;
 
-    Car* current = first;
-    Car* temp = nullptr;
+    Car *current = first;
+    Car *temp = nullptr;
 
     while (current != nullptr) {
         temp = current;
@@ -21,7 +18,7 @@ Train::~Train() {
 }
 
 void Train::addCar(bool light) {
-    Car* newCar = new Car();
+    Car *newCar = new Car();
     newCar->light = light;
     newCar->next = nullptr;
     newCar->prev = nullptr;
@@ -45,7 +42,7 @@ int Train::getLength() {
 
     first->light = false;
 
-    Car* current = first->next;
+    Car *current = first->next;
     int count = 1;
     countOp++;
 
@@ -57,7 +54,7 @@ int Train::getLength() {
 
     current->light = true;
 
-    Car* checkpoint = current;
+    Car *checkpoint = current;
     for (int i = 0; i < count; i++) {
         current = current->prev;
         countOp++;
@@ -79,7 +76,6 @@ int Train::getLength() {
         }
 
         count += steps;
-
         current->light = true;
         checkpoint = current;
 
