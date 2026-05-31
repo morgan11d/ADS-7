@@ -46,13 +46,19 @@ int Train::getLength() {
     Car *cur = first;
     int len = 0;
 
-    do {
+    cur = cur->next;
+    countOp++;
+    len++;
+
+    while (cur->light == true) {
         cur = cur->next;
         countOp++;
         len++;
-    } while (cur->light == true);
+    }
 
     cur->light = true;
+    countOp++;
+    Car *mark = cur;
 
     for (int i = 0; i < len; i++) {
         cur = cur->prev;
@@ -63,18 +69,22 @@ int Train::getLength() {
         return len;
     }
 
-    int pos = 0;
+    int dist = len;
 
     while (true) {
-        int steps = 0;
-        do {
+        cur = mark->next;
+        countOp++;
+        int steps = 1;
+
+        while (cur->light == true) {
             cur = cur->next;
             countOp++;
             steps++;
-        } while (cur->light == true);
+        }
 
         cur->light = true;
-        pos += steps;
+        countOp++;
+        mark = cur;
         len += steps;
 
         for (int i = 0; i < len; i++) {
