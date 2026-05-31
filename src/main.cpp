@@ -1,5 +1,8 @@
+// Copyright 2024 <Copyright Owner>
+
 #include "train.h"
 
+#include <cstdint>
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
@@ -14,9 +17,9 @@ int main() {
     csv << "n,all_off,all_on,random\n";
 
     for (int n = 2; n <= kMaxLength; n += 2) {
-        long long sumOff = 0;
-        long long sumOn = 0;
-        long long sumRand = 0;
+        int64_t sumOff = 0;
+        int64_t sumOn = 0;
+        int64_t sumRand = 0;
 
         for (int e = 0; e < kExperiments; e++) {
             Train trainOff;
