@@ -1,3 +1,5 @@
+// Copyright 2024 <Copyright Owner>
+
 #include "train.h"
 
 Train::Car::Car(bool value) : light(value), next(this), prev(this) {}
@@ -8,6 +10,7 @@ Train::~Train() {
     if (first == nullptr) {
         return;
     }
+
     Car *current = first->next;
     while (current != first) {
         Car *next = current->next;
@@ -23,6 +26,7 @@ void Train::addCar(bool light) {
         first = car;
         return;
     }
+
     Car *last = first->prev;
     last->next = car;
     car->prev = last;
@@ -35,22 +39,27 @@ int Train::getLength() {
     if (first == nullptr) {
         return 0;
     }
+
     Car *current = first;
     current->light = true;
     int distance = 0;
+
     while (true) {
         ++distance;
         current = current->next;
         ++countOp;
+
         if (current->light) {
             current->light = false;
             for (int i = 0; i < distance; ++i) {
                 current = current->prev;
                 ++countOp;
             }
+
             if (!current->light) {
                 return distance;
             }
+
             for (int i = 0; i < distance; ++i) {
                 current = current->next;
                 ++countOp;
