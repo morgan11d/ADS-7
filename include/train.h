@@ -1,26 +1,24 @@
-// Copyright 2024 <Copyright Owner>
-
-#ifndef INCLUDE_TRAIN_H_
-#define INCLUDE_TRAIN_H_
+#ifndef TRAIN_H
+#define TRAIN_H
 
 class Train {
- private:
+private:
     struct Car {
         bool light;
         Car *next;
         Car *prev;
+        Car(bool value);
     };
 
     int countOp;
     Car *first;
 
- public:
+public:
     Train();
     ~Train();
-
     void addCar(bool light);
     int getLength();
     int getOpCount();
 };
 
-#endif  // INCLUDE_TRAIN_H_
+#endif
