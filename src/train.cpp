@@ -43,92 +43,35 @@ int Train::getLength() {
     countOp = 0;
 
     first->light = false;
-
     Car *current = first->next;
     int count = 1;
     countOp++;
 
-    while (current->light == true) {
-        count++;
-        current = current->next;
-        countOp++;
-    }
-
-    current->light = true;
-
-    int steps = count;
-    while (steps > 0) {
-        current = current->prev;
-        countOp++;
-        steps--;
-    }
-
-    if (current->light == false) {
-        return count;
-    }
-
-    Car *mark = first;
-
-    while (true) {
-        current = mark;
-
-        steps = count;
-        while (steps > 0) {
-            current = current->next;
-            countOp++;
-            steps--;
-        }
-
+    while (current != first) {
         if (current->light == false) {
             current->light = true;
-
-            steps = count;
+            int steps = count;
             while (steps > 0) {
                 current = current->prev;
                 countOp++;
                 steps--;
             }
-
             if (current->light == false) {
                 return count;
             }
+            steps = count;
+            while (steps > 0) {
+                current = current->next;
+                countOp++;
+                steps--;
+            }
         }
-
-        steps = count;
-        while (steps > 0) {
-            current = current->next;
-            countOp++;
-            steps--;
-        }
-
-        int extra = 0;
-        while (current->light == true) {
-            extra++;
-            current = current->next;
-            countOp++;
-        }
-
-        count += extra;
-        current->light = true;
-
-        steps = extra;
-        while (steps > 0) {
-            current = current->prev;
-            countOp++;
-            steps--;
-        }
-
-        steps = count - extra;
-        while (steps > 0) {
-            current = current->prev;
-            countOp++;
-            steps--;
-        }
-
-        if (current->light == false) {
-            return count;
-        }
+        count++;
+        current = current->next;
+        countOp++;
     }
+
+    return count;
 }
 
 int Train::getOpCount() {
