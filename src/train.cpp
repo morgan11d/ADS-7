@@ -41,16 +41,19 @@ int Train::getLength() {
     if (first == nullptr) return 0;
 
     countOp = 0;
-    int length = 0;
+    int length = 1;
     Car *cur = first;
 
     cur->light = false;
 
-    do {
+    cur = cur->next;
+    countOp++;
+
+    while (cur->light == true) {
         cur = cur->next;
         countOp++;
         length++;
-    } while (cur->light == true);
+    }
 
     cur->light = true;
     countOp++;
