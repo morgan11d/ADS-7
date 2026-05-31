@@ -39,61 +39,68 @@ void Train::addCar(bool light) {
 
 int Train::getLength() {
     if (first == nullptr) return 0;
+    if (first->next == first) return 1;
 
     countOp = 0;
+
     first->light = false;
-
-    Car *cur = first;
-    int len = 0;
-
-    cur = cur->next;
+    Car *car = first->next;
+    int count = 1;
     countOp++;
-    len++;
 
-    while (cur->light == true) {
-        cur = cur->next;
-        countOp++;
-        len++;
-    }
-
-    cur->light = true;
-    countOp++;
-    Car *mark = cur;
-
-    for (int i = 0; i < len; i++) {
-        cur = cur->prev;
+    while (car->light == true) {
+        car = car->next;
+        count++;
         countOp++;
     }
 
-    if (cur->light == false) {
-        return len;
+    car->light = true;
+    countOp++;
+
+    int toGo = count;
+    while (toGo > 0) {
+        car = car->prev;
+        countOp++;
+        toGo--;
     }
 
-    int dist = len;
+    if (car->light == false) {
+        return count;
+    }
+
+    Car *lastFound = car;
+    for (int i = 0; i < count; i++) {
+        lastFound = lastFound->next;
+        countOp++;
+    }
+
+    int total = count;
 
     while (true) {
-        cur = mark->next;
+        car = lastFound->next;
         countOp++;
         int steps = 1;
 
-        while (cur->light == true) {
-            cur = cur->next;
-            countOp++;
+        while (car->light == true) {
+            car = car->next;
             steps++;
-        }
-
-        cur->light = true;
-        countOp++;
-        mark = cur;
-        len += steps;
-
-        for (int i = 0; i < len; i++) {
-            cur = cur->prev;
             countOp++;
         }
 
-        if (cur->light == false) {
-            return len;
+        car->light = true;
+        countOp++;
+        lastFound = car;
+        total += steps;
+
+        toGo = total;
+        while (toGo > 0) {
+            car = car->prev;
+            countOp++;
+            toGo--;
+        }
+
+        if (car->light == false) {
+            return total;
         }
     }
 }
