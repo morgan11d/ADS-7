@@ -39,68 +39,60 @@ void Train::addCar(bool light) {
 
 int Train::getLength() {
     if (first == nullptr) return 0;
-    if (first->next == first) return 1;
 
     countOp = 0;
+    int length = 0;
+    Car *cur = first;
 
-    first->light = false;
-    Car *car = first->next;
-    int count = 1;
+    cur->light = false;
+
+    do {
+        cur = cur->next;
+        countOp++;
+        length++;
+    } while (cur->light == true);
+
+    cur->light = true;
     countOp++;
 
-    while (car->light == true) {
-        car = car->next;
-        count++;
+    for (int i = 0; i < length; i++) {
+        cur = cur->prev;
         countOp++;
     }
 
-    car->light = true;
-    countOp++;
-
-    int toGo = count;
-    while (toGo > 0) {
-        car = car->prev;
-        countOp++;
-        toGo--;
+    if (cur == first) {
+        return length;
     }
 
-    if (car->light == false) {
-        return count;
-    }
-
-    Car *lastFound = car;
-    for (int i = 0; i < count; i++) {
-        lastFound = lastFound->next;
+    int known = length;
+    Car *anchor = cur;
+    for (int i = 0; i < length; i++) {
+        anchor = anchor->next;
         countOp++;
     }
-
-    int total = count;
 
     while (true) {
-        car = lastFound->next;
-        countOp++;
-        int steps = 1;
+        cur = anchor;
+        int steps = 0;
 
-        while (car->light == true) {
-            car = car->next;
+        do {
+            cur = cur->next;
+            countOp++;
             steps++;
-            countOp++;
-        }
+        } while (cur->light == true);
 
-        car->light = true;
+        cur->light = true;
         countOp++;
-        lastFound = car;
-        total += steps;
+        anchor = cur;
+        known += steps;
 
-        toGo = total;
-        while (toGo > 0) {
-            car = car->prev;
+        for (int i = 0; i < known; i++) {
+            cur = cur->prev;
             countOp++;
-            toGo--;
         }
 
-        if (car->light == false) {
-            return total;
+        if (cur == first) {
+            return known;
         }
     }
 }
