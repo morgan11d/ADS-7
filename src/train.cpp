@@ -54,6 +54,7 @@ int Train::getLength() {
     }
 
     current->light = true;
+    Car *saved = current;
 
     for (int i = 0; i < count; i++) {
         current = current->prev;
@@ -64,10 +65,8 @@ int Train::getLength() {
         return count;
     }
 
-    Car *checkpoint = current;
-
     while (true) {
-        current = checkpoint->next;
+        current = saved->next;
         countOp++;
         int steps = 1;
 
@@ -78,14 +77,8 @@ int Train::getLength() {
         }
 
         current->light = true;
+        saved = current;
         count += steps;
-
-        for (int i = 0; i < steps; i++) {
-            current = current->prev;
-            countOp++;
-        }
-
-        checkpoint = current;
 
         for (int i = 0; i < count; i++) {
             current = current->prev;
