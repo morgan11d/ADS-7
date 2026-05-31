@@ -1,3 +1,5 @@
+// Copyright 2024 <Copyright Owner>
+
 #include "train.h"
 
 Train::Train() : countOp(0), first(nullptr) {}
@@ -41,20 +43,25 @@ int Train::getLength() {
     countOp = 0;
 
     first->light = false;
+    countOp++;
 
     Car *current = first->next;
     int count = 1;
     countOp++;
 
-    while (current->light == true) {
+    while (current->light == true && current != first) {
         count++;
         current = current->next;
         countOp++;
     }
 
-    current->light = true;
+    if (current == first) {
+        return count;
+    }
 
+    current->light = true;
     Car *checkpoint = current;
+
     for (int i = 0; i < count; i++) {
         current = current->prev;
         countOp++;
@@ -69,10 +76,14 @@ int Train::getLength() {
         countOp++;
         int steps = 1;
 
-        while (current->light == true) {
+        while (current->light == true && current != checkpoint) {
             steps++;
             current = current->next;
             countOp++;
+        }
+
+        if (current == checkpoint) {
+            return count;
         }
 
         count += steps;
