@@ -1,12 +1,12 @@
 // Copyright 2024 <Copyright Owner>
 
-#include "train.h"
-
 #include <ctime>
 
 #include <cstdint>
 #include <cstdlib>
 #include <fstream>
+
+#include "train.h"
 
 int main() {
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
