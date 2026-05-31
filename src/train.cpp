@@ -1,102 +1,60 @@
-// Copyright 2024 <Copyright Owner>
-
 #include "train.h"
+
+Train::Car::Car(bool value) : light(value), next(this), prev(this) {}
 
 Train::Train() : countOp(0), first(nullptr) {}
 
 Train::~Train() {
-    if (first == nullptr) return;
-
-    first->prev->next = nullptr;
-
-    Car *current = first;
-    Car *temp = nullptr;
-
-    while (current != nullptr) {
-        temp = current;
-        current = current->next;
-        delete temp;
+    if (first == nullptr) {
+        return;
     }
+    Car *current = first->next;
+    while (current != first) {
+        Car *next = current->next;
+        delete current;
+        current = next;
+    }
+    delete first;
 }
 
 void Train::addCar(bool light) {
-    Car *newCar = new Car();
-    newCar->light = light;
-    newCar->next = nullptr;
-    newCar->prev = nullptr;
-
+    Car *car = new Car(light);
     if (first == nullptr) {
-        first = newCar;
-        newCar->next = newCar;
-        newCar->prev = newCar;
-    } else {
-        newCar->next = first;
-        newCar->prev = first->prev;
-        first->prev->next = newCar;
-        first->prev = newCar;
+        first = car;
+        return;
     }
+    Car *last = first->prev;
+    last->next = car;
+    car->prev = last;
+    car->next = first;
+    first->prev = car;
 }
 
 int Train::getLength() {
-    if (first == nullptr) return 0;
-
     countOp = 0;
-
-    Car *car = first;
-    car->light = false;
-
-    car = car->next;
-    countOp++;
-    int len = 1;
-
-    while (car->light == true) {
-        car = car->next;
-        countOp++;
-        len++;
+    if (first == nullptr) {
+        return 0;
     }
-
-    car->light = true;
-
-    int back = len;
-    while (back > 0) {
-        car = car->prev;
-        countOp++;
-        back--;
-    }
-
-    if (car->light == false) {
-        return len;
-    }
-
-    Car *mark = car;
-    for (int i = 0; i < len; i++) {
-        mark = mark->next;
-        countOp++;
-    }
-
+    Car *current = first;
+    current->light = true;
+    int distance = 0;
     while (true) {
-        car = mark;
-        int steps = 0;
-
-        do {
-            car = car->next;
-            countOp++;
-            steps++;
-        } while (car->light == true);
-
-        car->light = true;
-        mark = car;
-        len += steps;
-
-        back = len;
-        while (back > 0) {
-            car = car->prev;
-            countOp++;
-            back--;
-        }
-
-        if (car->light == false) {
-            return len;
+        ++distance;
+        current = current->next;
+        ++countOp;
+        if (current->light) {
+            current->light = false;
+            for (int i = 0; i < distance; ++i) {
+                current = current->prev;
+                ++countOp;
+            }
+            if (!current->light) {
+                return distance;
+            }
+            for (int i = 0; i < distance; ++i) {
+                current = current->next;
+                ++countOp;
+            }
         }
     }
 }
