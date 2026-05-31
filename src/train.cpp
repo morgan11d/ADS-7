@@ -41,61 +41,62 @@ int Train::getLength() {
     if (first == nullptr) return 0;
 
     countOp = 0;
-    int length = 1;
-    Car *cur = first;
 
-    cur->light = false;
+    Car *car = first;
+    car->light = false;
 
-    cur = cur->next;
+    car = car->next;
     countOp++;
+    int len = 1;
 
-    while (cur->light == true) {
-        cur = cur->next;
+    while (car->light == true) {
+        car = car->next;
         countOp++;
-        length++;
+        len++;
     }
 
-    cur->light = true;
-    countOp++;
+    car->light = true;
 
-    for (int i = 0; i < length; i++) {
-        cur = cur->prev;
+    int back = len;
+    while (back > 0) {
+        car = car->prev;
         countOp++;
+        back--;
     }
 
-    if (cur == first) {
-        return length;
+    if (car->light == false) {
+        return len;
     }
 
-    int known = length;
-    Car *anchor = cur;
-    for (int i = 0; i < length; i++) {
-        anchor = anchor->next;
+    Car *mark = car;
+    for (int i = 0; i < len; i++) {
+        mark = mark->next;
         countOp++;
     }
 
     while (true) {
-        cur = anchor;
+        car = mark;
         int steps = 0;
 
         do {
-            cur = cur->next;
+            car = car->next;
             countOp++;
             steps++;
-        } while (cur->light == true);
+        } while (car->light == true);
 
-        cur->light = true;
-        countOp++;
-        anchor = cur;
-        known += steps;
+        car->light = true;
+        mark = car;
+        len += steps;
 
-        for (int i = 0; i < known; i++) {
-            cur = cur->prev;
+        back = len;
+        while (back > 0) {
+            car = car->prev;
             countOp++;
+            back--;
         }
 
-        if (cur == first) {
-            return known;
+        if (car->light == false) {
+            return len;
         }
     }
 }
