@@ -49,17 +49,15 @@ int Train::getLength() {
     int count = 1;
     countOp++;
 
-    while (current->light == true && current != first) {
+    while (current->light == true) {
         count++;
         current = current->next;
         countOp++;
     }
 
-    if (current == first) {
-        return count;
-    }
-
     current->light = true;
+    countOp++;
+
     Car *checkpoint = current;
 
     for (int i = 0; i < count; i++) {
@@ -76,18 +74,16 @@ int Train::getLength() {
         countOp++;
         int steps = 1;
 
-        while (current->light == true && current != checkpoint) {
+        while (current->light == true) {
             steps++;
             current = current->next;
             countOp++;
         }
 
-        if (current == checkpoint) {
-            return count;
-        }
-
         count += steps;
+
         current->light = true;
+        countOp++;
         checkpoint = current;
 
         for (int i = 0; i < steps; i++) {
