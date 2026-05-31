@@ -73,6 +73,8 @@ int Train::getLength() {
         return count;
     }
 
+    int totalChecked = count;
+
     while (true) {
         current = checkpoint->next;
         countOp++;
@@ -84,11 +86,11 @@ int Train::getLength() {
             countOp++;
         }
 
-        if (current == checkpoint) {
+        totalChecked += steps;
+
+        if (current == checkpoint || totalChecked >= count) {
             return count;
         }
-
-        count += steps;
 
         current->light = true;
         countOp++;
